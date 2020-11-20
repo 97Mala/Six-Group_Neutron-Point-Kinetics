@@ -4,7 +4,7 @@ Six Group of delayed neutron precursors implemented
 
 It hence deal with a stiff problem due to the differences in evolution time scale between prompt and delayed neutron.
 ________________________________________________________________________________
-#  MAIN FILES INDEX
+#  MAIN Files Index
 
 main.py   -> main program, performs the simulation and saves the csv with the results as well as the outcoming plots
 
@@ -17,6 +17,6 @@ KINct     -> .png file with the outcoming set of precursors group profile
 .replit   -> config file for Repl usage - DO NOT DELETE
 
 ________________________________________________________________________________
-#  SECONDARY FILES INDEX
+#  SECONDARY Files Index
 
 KINnt-promprjump -> .png file where displayed the rapid neutron jump due to prompt neutron

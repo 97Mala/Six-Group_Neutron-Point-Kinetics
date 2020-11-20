@@ -4,12 +4,13 @@ import os
 #  set the 'MPLCONFIGDIR' to '/tmp' to get a writable environment for matplotlib
 os.environ['MPLCONFIGDIR'] = '/tmp'
 import matplotlib.pyplot as plt
+import csv
 from KINmodule import *
 
 # time discretizzation
 t0 = 0
-tf = 60
-dt = 0.1 # [s]
+tf = 30
+dt = 0.05 # [s]
 N   = round((tf-t0)/dt)+1
 t = np.array(range(N))*dt+t0
 
@@ -42,11 +43,12 @@ ode15s.set_initial_value(u0, t=0.0).set_f_params(param)
 # (DN is the number of steps between two message)
 DN = 100
 nsteps = DN
+ii = 1
 print('------------------------------')
 # SOLVE THE PROBLEM
 while ode15s.successful() and ode15s.t < tf:
     # this tells us how many steps have been performed
-    if (i / nsteps == 1):
+    if (ii / nsteps == 1):
         print('------------------------------')
         print(str(nsteps), ' steps performed')
         nsteps = nsteps + DN
@@ -56,6 +58,7 @@ while ode15s.successful() and ode15s.t < tf:
     # loading
     ts.append(ode15s.t)
     sol.append(np.real(ode15s.y.copy()))
+    ii = ii+1
 print('------------------------------')
 print('Simulation Completed')
 print('------------------------------')
@@ -76,24 +79,33 @@ c6 = sol[:, 6]
 plt.figure(1)
 plt.plot(t, n)
 plt.xlabel("Time [s]")
-plt.ylabel("c1 [L^-3]")
+plt.ylabel("Population Density [1/cm]")
 plt.title("Neutron concentration")
 plt.grid()
+plt.savefig('KINnt.png')
 
 plt.figure(2)
 plt.plot(t, c1)
-plt.xlabel("Time [s]")
-plt.ylabel("c1 [L^-3]")
-plt.title("First group of precursors concentration")
-plt.grid()
-
-plt.figure(3)
 plt.plot(t, c2)
+plt.plot(t, c3)
+plt.plot(t, c4)
+plt.plot(t, c5)
+plt.plot(t, c6)
+plt.legend(["Group 1", "Group 2", "Group 3", "Group 4", "Group 5", "Group 6"])
 plt.xlabel("Time [s]")
-plt.ylabel("c2 [L^-3]")
-plt.title("Second group of precursors concentration")
+plt.ylabel("Population Density [1/cm]")
+plt.title("Precursor Groups concentration")
 plt.grid()
+plt.savefig('KINct.png')
 
 # to show all figures
 #plt.show()
-#
+
+# save a csv file
+solFileName = "KINsol.csv"
+with open(solFileName, 'w') as solFile:
+  writer = csv.writer(solFile)
+  rowNum = 0
+  writer.writerow(['Time [s]', 'n Density [1/cm3]', 'Group 1 Precursor Density [1/cm3]  ','Group 2','Group 3','Group 4','Group 5','Group 6'])
+  writer.writerows([[t[jj],n[jj],c1[jj],c2[jj],c3[jj],c4[jj],c5[jj],c6[jj]] for jj in range(len(t))])
+  

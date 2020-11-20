@@ -1,4 +1,4 @@
-################# Neutron Point Kinetics simulation code ####################   
+#                     Neutron Point Kinetics simulation code   
 
 Six Group of delayed neutron precursors implemented
 
